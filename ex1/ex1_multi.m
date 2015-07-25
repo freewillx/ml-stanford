@@ -125,15 +125,15 @@ for at = alphaTest
   cIdx = cIdx + 1;
 end
 
-X_FORSALE = [1, (1650-mu(1))/sigma(1), (3-mu(2))/sigma(2)];
+X_FORSALE_NORM = [1, (1650-mu(1))/sigma(1), (3-mu(2))/sigma(2)];
 
 
-price = X_FORSALE * bestTheta; % You should change this
+price = X_FORSALE_NORM * bestTheta; % You should change this
 fprintf(['Predicted price of a 1650 sq-ft, 3 br house ' ...
          '(using best theta):\n $%f\n'], price);
 
 
-price = X_FORSALE * theta; % You should change this
+price = X_FORSALE_NORM * theta; % You should change this
 
 
 % ============================================================
@@ -178,7 +178,8 @@ fprintf('\n');
 
 % Estimate the price of a 1650 sq-ft, 3 br house
 % ====================== YOUR CODE HERE ======================
-price = 0; % You should change this
+X_FORSALE = [1, 1650, 3];
+price = X_FORSALE * theta; % You should change this
 
 
 % ============================================================
