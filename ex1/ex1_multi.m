@@ -104,7 +104,36 @@ fprintf('\n');
 % ====================== YOUR CODE HERE ======================
 % Recall that the first column of X is all-ones. Thus, it does
 % not need to be normalized.
-price = 0; % You should change this
+
+hold on;
+alphaTest = ((ones(1,4)*3) .^ [1:4]) * alpha;
+color = ['r','g','m','c','w','k']
+
+minJ = min(J_history);
+bestTheta = theta;
+
+cIdx = 1;
+for at = alphaTest
+  thetaTest = zeros(3, 1);
+  [thetaTest, J_Hist_Test] = gradientDescentMulti(X, y, thetaTest, at, num_iters);
+  plot(1:numel(J_Hist_Test), J_Hist_Test, color(cIdx), 'LineWidth', 2);
+
+  if(minJ > min(J_Hist_Test))
+    bestTheta = thetaTest;
+  end;
+
+  cIdx = cIdx + 1;
+end
+
+X_FORSALE = [1, (1650-mu(1))/sigma(1), (3-mu(2))/sigma(2)];
+
+
+price = X_FORSALE * bestTheta; % You should change this
+fprintf(['Predicted price of a 1650 sq-ft, 3 br house ' ...
+         '(using best theta):\n $%f\n'], price);
+
+
+price = X_FORSALE * theta; % You should change this
 
 
 % ============================================================
