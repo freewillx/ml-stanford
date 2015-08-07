@@ -21,9 +21,22 @@ p = zeros(size(X, 1), 1);
 %       can use max(A, [], 2) to obtain the max for each row.
 %
 
+%disp('Theta1 size:'), disp(size(Theta1))
+%disp('Theta2 size:'), disp(size(Theta2))
 
+X = [ones(m, 1) X];
+%disp('X size:'), disp(size(X))
 
+A2 = [ones(m,1) sigmoid(X * Theta1')];
+%disp('A2 size:'), disp(size(A2))
 
+A3 = sigmoid(A2 * Theta2');
+%disp('A3 size:'), disp(size(A3))
+
+[pAll, pAllIdx] = max(A3, [], 2);
+%disp('pAllIdx size:'), disp(size(pAllIdx))
+
+p = pAllIdx;
 
 
 
