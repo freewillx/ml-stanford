@@ -62,32 +62,57 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+% iterate through all elements
+for t=1:m
+  
+  % Convert y to logical array repersentation
+  yT = (1:num_labels == y(t))';
+  
+  % Forward propagation
+  % a1 is 401 X 1 vector  
+  a1 = [1; X(t,:)'];
 
+  % z2 is 25 X 1 vector
+  z2 = Theta1 * a1;
+  % a2 is 26 X 1 vector
+  a2 = [1; sigmoid(z2)];
+ 
+  % z3 a3 are 10 X 1 vectors
+  z3 = Theta2 * a2;
+  a3 = sigmoid(z3);
 
-inputX = [ones(m, 1), X];
+  % Cost for the sample data point
+  costT = -yT .* log(a3) - (1-yT).*log(1-a3);
+  J = J + sum(costT);
+ 
+  % Back propagation
+  % d3 is 10 X 1 vector
+  d3 = a3 - yT;
 
-% z is 5000 X 10 vector
-z = sigmoid([ones(m,1), sigmoid(inputX * Theta1')] * Theta2');
+  % d2 is 25 X 1 vector
+  d2 = (Theta2' * d3)(2:end) .* sigmoidGradient(z2);
+ 
+  % delta 2 is 10 X 26 matrix 
+  Theta2_grad = Theta2_grad + d3 * a2'; 
 
-% convert y to Y matrix of index repersentation
-Y = zeros(m, num_labels);
-for i=1:m
-  Y(i,y(i)) = 1;
+  % delta 1 is 25 * 401 matrix
+  Theta1_grad = Theta1_grad + d2 * a1'; 
+  
 endfor
 
-% Matrix of m X 10, for every calclated cost term before sum
-termMatrix = -Y.*log(z) - (1 - Y).*log(1-z);
+% J final calculation
+J = J / m;
 
-% Remove bias term for regularization calculation
+% J Regularization
 th1 = Theta1(:,2:end);
 th2 = Theta2(:,2:end);
 
 reg =  lambda * ( sum(sum((th1 .^ 2), 2)) + sum(sum((th2 .^ 2), 2)) ) / (2*m);
-J = sum( sum(termMatrix,2)  ) / m + reg;
+J = J + reg;
 
-
-
-
+% Gradians final calculation
+Theta1_grad = Theta1_grad / m;
+Theta2_grad = Theta2_grad / m;
 
 
 
