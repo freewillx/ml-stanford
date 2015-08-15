@@ -92,10 +92,10 @@ for t=1:m
   % d2 is 25 X 1 vector
   d2 = (Theta2' * d3)(2:end) .* sigmoidGradient(z2);
  
-  % delta 2 is 10 X 26 matrix 
+  % Theta2_grad is 10 X 26 matrix 
   Theta2_grad = Theta2_grad + d3 * a2'; 
 
-  % delta 1 is 25 * 401 matrix
+  % Theta1_grad is 25 * 401 matrix
   Theta1_grad = Theta1_grad + d2 * a1'; 
   
 endfor
@@ -110,13 +110,13 @@ th2 = Theta2(:,2:end);
 reg =  lambda * ( sum(sum((th1 .^ 2), 2)) + sum(sum((th2 .^ 2), 2)) ) / (2*m);
 J = J + reg;
 
-% Gradians final calculation
-Theta1_grad = Theta1_grad / m;
+% Gradians calculation
 Theta2_grad = Theta2_grad / m;
+Theta1_grad = Theta1_grad / m;
 
-
-
-
+% Gradians regularization
+Theta2_grad(:,2:end) = Theta2_grad(:,2:end) + (lambda/m) * Theta2(:,2:end);
+Theta1_grad(:,2:end) = Theta1_grad(:,2:end) + (lambda/m) * Theta1(:,2:end);
 
 % -------------------------------------------------------------
 
