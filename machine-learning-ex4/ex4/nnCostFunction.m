@@ -64,13 +64,21 @@ Theta2_grad = zeros(size(Theta2));
 
 
 
+inputX = [ones(m, 1), X];
 
+% z is 5000 X 10 vector
+z = sigmoid([ones(m,1), sigmoid(inputX * Theta1')] * Theta2');
 
+% convert y to Y matrix of index repersentation
+Y = zeros(m, num_labels);
+for i=1:m
+  Y(i,y(i)) = 1;
+endfor
 
+% Matrix of m X 10, for every calclated cost term before sum
+termMatrix = -Y.*log(z) - (1 - Y).*log(1-z);
 
-
-
-
+J = sum( sum(termMatrix,2)  ) / m;
 
 
 
