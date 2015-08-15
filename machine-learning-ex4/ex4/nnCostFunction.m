@@ -78,7 +78,12 @@ endfor
 % Matrix of m X 10, for every calclated cost term before sum
 termMatrix = -Y.*log(z) - (1 - Y).*log(1-z);
 
-J = sum( sum(termMatrix,2)  ) / m;
+% Remove bias term for regularization calculation
+th1 = Theta1(:,2:end);
+th2 = Theta2(:,2:end);
+
+reg =  lambda * ( sum(sum((th1 .^ 2), 2)) + sum(sum((th2 .^ 2), 2)) ) / (2*m);
+J = sum( sum(termMatrix,2)  ) / m + reg;
 
 
 
