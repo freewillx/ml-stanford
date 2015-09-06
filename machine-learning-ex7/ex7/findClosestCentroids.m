@@ -21,7 +21,22 @@ idx = zeros(size(X,1), 1);
 % Note: You can use a for-loop over the examples to compute this.
 %
 
+for i = (1:length(idx))
+ x = X(i,:);
 
+  % Calculate min norm
+  minNorm = -1;
+
+  for k = (1:K)
+   distance = norm(x - centroids(k,:)) ^2;
+
+   if (minNorm == -1 || minNorm >= distance)
+     minNorm = distance;
+     idx(i) = k;
+   endif
+  endfor
+
+endfor
 
 
 
